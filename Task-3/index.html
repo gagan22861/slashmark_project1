@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Chatbot</title>
+</head>
+<body>
+    <h1>FAQ Chatbot</h1>
+    <div>
+        <label for="question">Ask a question:</label>
+        <input type="text" id="question" name="question" style="width: 300px;">
+        <button onclick="askQuestion()">Ask</button>
+    </div>
+    <div id="response"></div>
+
+    <script>
+        function askQuestion() {
+            var question = document.getElementById('question').value;
+            var responseDiv = document.getElementById('response');
+            responseDiv.innerHTML = 'Loading...';
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'user_input=' + encodeURIComponent(question),
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseDiv.innerHTML = 'Answer: ' + data.response;
+            });
+        }
+    </script>
+</body>
+</html>
